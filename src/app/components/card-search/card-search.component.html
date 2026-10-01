@@ -1,0 +1,95 @@
+<section class="search-section">
+
+  <!-- ── Cabecera y buscador ─────────────────────────────── -->
+  <header class="search-header">
+    <h1 class="app-title">
+      <span class="title-deco">⚡</span> Yu-Gi-Oh! Card Explorer
+    </h1>
+    <p class="subtitle">Busca entre más de 12,000 cartas del juego</p>
+
+    <div class="search-box">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Busca una carta... (ej: Blue-Eyes, Dark Magician)"
+        [(ngModel)]="searchQuery"
+        (ngModelChange)="onSearch($event)"
+        autocomplete="off"
+        aria-label="Buscar cartas de Yu-Gi-Oh!"
+      />
+    </div>
+  </header>
+
+  <!-- ── Área de resultados (4 estados) ─────────────────── -->
+  <div class="results-area">
+
+    @switch (status()) {
+
+      <!-- ESTADO: Loading -->
+      @case ('loading') {
+        <div class="state-container">
+          <div class="spinner" role="status" aria-label="Cargando"></div>
+          <p class="state-text">Buscando cartas...</p>
+        </div>
+      }
+
+      <!-- ESTADO: Error -->
+      @case ('error') {
+        <div class="state-container">
+          <span class="state-emoji" aria-hidden="true">⚠️</span>
+          <p class="state-text error-text">{{ errorMessage() }}</p>
+        </div>
+      }
+
+      <!-- ESTADO: Empty -->
+      @case ('empty') {
+        <div class="state-container">
+          <span class="state-emoji" aria-hidden="true">🃏</span>
+          <p class="state-text">
+            No se encontraron cartas para
+            <strong>"{{ searchQuery }}"</strong>.
+          </p>
+        </div>
+      }
+
+      <!-- ESTADO: Success -->
+      @case ('success') {
+        <p class="results-count">{{ cards().length }} carta(s) encontrada(s)</p>
+        <div class="cards-grid">
+          @for (card of cards(); track card.id) {
+            <article class="card-item">
+              <div class="card-image-wrapper">
+                <img
+                  [src]="card.card_images[0].image_url_small"
+                  [alt]="card.name"
+                  class="card-image"
+                  loading="lazy"
+                />
+              </div>
+              <div class="card-info">
+                <h3 class="card-name">{{ card.name }}</h3>
+                <span class="card-type">{{ card.type }}</span>
+                @if (card.atk !== undefined) {
+                  <div class="card-stats">
+                    <span class="stat">ATK {{ card.atk }}</span>
+                    <span class="stat">DEF {{ card.def }}</span>
+                  </div>
+                }
+              </div>
+            </article>
+          }
+        </div>
+      }
+
+      <!-- ESTADO: Idle (inicial) -->
+      @default {
+        <div class="state-container">
+          <span class="state-emoji" aria-hidden="true">🐉</span>
+          <p class="state-text">Escribe un nombre para comenzar la búsqueda.</p>
+        </div>
+      }
+
+    }
+  </div>
+</section>

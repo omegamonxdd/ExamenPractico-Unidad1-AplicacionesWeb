@@ -1,0 +1,145 @@
+<section class="blue-eyes-section">
+
+  <!-- ── Cabecera ──────────────────────────────────────────────── -->
+  <header class="be-header">
+    <div class="be-header__inner">
+      <h2 class="be-title">Blue-Eyes Archive</h2>
+      <p class="be-subtitle">
+        Impresiones del arquetipo Blue-Eyes · datos en tiempo real desde YGOPRODeck
+      </p>
+    </div>
+  </header>
+
+  <!-- ── ESTADO: Loading ─────────────────────────────────────── -->
+  @if (status() === 'loading') {
+    <div class="state-container">
+      <div class="spinner" role="status" aria-label="Cargando"></div>
+      <p class="state-text">Cargando arquetipo Blue-Eyes...</p>
+    </div>
+  }
+
+  <!-- ── ESTADO: Error ───────────────────────────────────────── -->
+  @if (status() === 'error') {
+    <div class="state-container">
+      <span class="state-emoji" aria-hidden="true">⚠️</span>
+      <p class="state-text error-text">{{ errorMessage() }}</p>
+    </div>
+  }
+
+  <!-- ── ESTADO: Success ─────────────────────────────────────── -->
+  @if (status() === 'success') {
+
+    <!-- Filtro por expansión -->
+    <div class="filter-section">
+      <div class="filter-header">
+        <h3 class="filter-title">
+          📦 Expansiones
+          <span class="filter-count">({{ expansions().length }})</span>
+        </h3>
+        @if (selectedExpansion()) {
+          <button class="clear-btn" (click)="clearFilter()" aria-label="Limpiar filtro">
+            ✕ Limpiar
+          </button>
+        }
+      </div>
+
+      <!-- Chips de expansión — generados 100% dinámicamente desde la API -->
+      <div class="chips-container" role="list" aria-label="Filtro de expansiones">
+        @for (exp of expansions(); track exp) {
+          <button
+            role="listitem"
+            class="chip"
+            [class.chip--active]="selectedExpansion() === exp"
+            (click)="selectExpansion(exp)"
+            [attr.aria-pressed]="selectedExpansion() === exp"
+          >
+            {{ exp }}
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Contador de resultados -->
+    <p class="results-info">
+      <strong>{{ filteredPrints().length }}</strong> impresión(es)
+      @if (selectedExpansion()) {
+        en <em>{{ selectedExpansion() }}</em>
+      } @else {
+        en total
+      }
+    </p>
+
+    <!-- Grid de impresiones -->
+    <div class="prints-grid">
+      @for (print of filteredPrints(); track trackPrint($index, print)) {
+        <article class="print-card">
+
+          <!-- Imagen de la carta -->
+          <div class="print-card__image-wrap">
+            <img
+              [src]="print.imageUrlSmall"
+              [alt]="print.cardName"
+              class="print-card__image"
+              loading="lazy"
+            />
+          </div>
+
+          <!-- Información de la impresión -->
+          <div class="print-card__body">
+            <h4 class="print-card__name">{{ print.cardName }}</h4>
+            <span class="print-card__type">{{ print.cardType }}</span>
+
+            <dl class="print-card__details">
+
+              <div class="detail-row">
+                <dt class="detail-label">Expansión</dt>
+                <dd class="detail-value">{{ print.setName }}</dd>
+              </div>
+
+              <div class="detail-row">
+                <dt class="detail-label">Código</dt>
+                <dd class="detail-value detail-value--code">{{ print.setCode }}</dd>
+              </div>
+
+              <div class="detail-row">
+                <dt class="detail-label">Rareza</dt>
+                <dd class="detail-value detail-value--rarity">{{ print.setRarity }}</dd>
+              </div>
+
+              <div class="detail-row">
+                <dt class="detail-label">Precio</dt>
+                <dd class="detail-value detail-value--price">
+                  @if (print.setPrice && print.setPrice !== '0.00') {
+                    ${{ print.setPrice }}
+                  } @else {
+                    <span class="no-price">N/D</span>
+                  }
+                </dd>
+              </div>
+
+            </dl>
+
+            <!-- Precios de referencia de mercado -->
+            <div class="market-prices">
+              <span class="market-label">Cardmarket</span>
+              <span class="market-value">
+                @if (print.cardmarketPrice !== '—' && print.cardmarketPrice !== '0.00') {
+                  €{{ print.cardmarketPrice }}
+                } @else { — }
+              </span>
+              <span class="market-label">TCGPlayer</span>
+              <span class="market-value">
+                @if (print.tcgplayerPrice !== '—' && print.tcgplayerPrice !== '0.00') {
+                  ${{ print.tcgplayerPrice }}
+                } @else { — }
+              </span>
+            </div>
+
+          </div>
+        </article>
+      }
+    </div>
+
+  }
+
+</section>

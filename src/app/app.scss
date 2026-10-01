@@ -1,0 +1,83 @@
+// ── Variables ─────────────────────────────────────────────────────────────────
+$gold:     #ffd700;
+$bg-nav:   rgba(10, 10, 20, 0.96);
+$nav-h:    57px;
+
+// ── Host ──────────────────────────────────────────────────────────────────────
+:host {
+  display: block;
+  min-height: 100dvh;
+  background: #0d0d1a;
+}
+
+// ── Barra de navegación ───────────────────────────────────────────────────────
+.app-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  height: $nav-h;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0 1.5rem;
+  background: $bg-nav;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 215, 0, 0.1);
+}
+
+// ── Brand ─────────────────────────────────────────────────────────────────────
+.app-nav__brand {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  margin-right: auto;
+}
+
+.brand-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.brand-name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  background: linear-gradient(135deg, $gold, #ff8c00);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.01em;
+}
+
+// ── Links de navegación ───────────────────────────────────────────────────────
+.app-nav__links {
+  display: flex;
+  gap: 0.35rem;
+}
+
+.app-nav__link {
+  padding: 0.45rem 1.1rem;
+  border-radius: 8px;
+  border: 1px solid transparent;
+  color: #a0aec0;
+  text-decoration: none;
+  font-size: 0.88rem;
+  font-weight: 500;
+  transition: color 0.2s, background 0.2s, border-color 0.2s;
+
+  &:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  &--active {
+    color: $gold;
+    background: rgba(255, 215, 0, 0.08);
+    border-color: rgba(255, 215, 0, 0.28);
+  }
+}
+
+// ── Contenido principal ────────────────────────────────────────────────────────
+.app-main {
+  min-height: calc(100dvh - #{$nav-h});
+}

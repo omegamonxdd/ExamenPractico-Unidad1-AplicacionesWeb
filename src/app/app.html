@@ -1,0 +1,31 @@
+<!-- ── Barra de navegación global ──────────────────────────────────────── -->
+<nav class="app-nav" aria-label="Navegación principal">
+  <div class="app-nav__brand">
+    <span class="brand-icon" aria-hidden="true">⚡</span>
+    <span class="brand-name">YGO Explorer</span>
+  </div>
+
+  <div class="app-nav__links">
+    <a
+      routerLink="/search"
+      routerLinkActive="app-nav__link--active"
+      class="app-nav__link"
+      aria-label="Buscador de cartas"
+    >
+      🔍 Buscador
+    </a>
+    <a
+      routerLink="/blue-eyes"
+      routerLinkActive="app-nav__link--active"
+      class="app-nav__link"
+      aria-label="Arquetipo Blue-Eyes"
+    >
+      👁️ Blue-Eyes
+    </a>
+  </div>
+</nav>
+
+<!-- ── Vista del router ─────────────────────────────────────────────────── -->
+<main class="app-main">
+  <router-outlet />
+</main>
